@@ -1,0 +1,118 @@
+<div id="publisher-lists" class="row" ng-controller='publisher-lists'>
+  <script type="text/ng-template" id="/publisher-list.html">
+    <td class="name col-lg-12" colspan=2>
+      <div ng-class="value" ng-click="valueClick($event, $index)">{{publisherList.name}}</div>
+    </td>
+  </script>
+  <script type="text/ng-template" id="/publisher-list/save-template">
+    <div class="modal-header">
+      <h3>Save?</h3>
+    </div>
+    <div class="modal-body">
+      Are you sure you want to save this publisher list?
+    </div>
+    <div class="modal-footer">
+      <div class="row">
+        <div class="col-lg-12">
+          <button class="btn btn-primary" type="button" ng-click="$ctrl.ok()">OK</button>
+          <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </script>
+  <div class="col-lg-8">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <div class="row">
+          <div class="col-lg-12">All Publisher Lists</div>
+        </div>
+      </div>
+      <div class="panel-body">
+        <table class="table table-bordered table-hover table-striped">
+          <thead>
+            <tr>
+              <th class="col-lg-6">Name</th>
+              <th class='col-lg-6'><button ng-click='newPublisherList()'>New</button></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat='publisherList in publisherListList' ng-include src="'/publisher-list.html'" ng-class="{'publisherList': true, 'paused': publisherList.status == 0}"></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div id="publisherListEditor" ng-class="{'edit-active': editingIndex != -1, 'editing-panel': true}">
+      <div class="panel panel-default">
+        <div class="panel-heading">Editing</div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-lg-4">
+              <label to="name">Name</label>
+            </div>
+            <div class="col-lg-8">
+              <input name="name" type="text" ng-model="publisherListList[editingIndex].name"></input>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-4">
+              <label to="is-direct">Is Direct?</label>
+            </div>
+            <div class="col-lg-8">
+              <input name="is-direct" type="checkbox" ng-model="publisherListList[editingIndex].is_direct"></input>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-4">
+              <label to="max-lead-units">Max Lead Units</label>
+            </div>
+            <div class="col-lg-8">
+              <input name="max-lead-units" type="number" ng-model="publisherListList[editingIndex].max_lead_units"></input>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-4">
+              <label to="ext-list-id">External List ID</label>
+            </div>
+            <div class="col-lg-8">
+              <input name="ext-list-id" type="text" ng-model="publisherListList[editingIndex].ext_list_id"></input>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-4">
+              <label to="publishers">Publishers</label>
+            </div>
+            <div class="col-lg-8">
+              <select name="publishers" ng-model="publisherListList[editingIndex].publishers" multiple>
+                <option ng-repeat="publisher in publisherList | orderBy: 'name'" ng-value="publisher.id">{{publisher.name}}</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col-lg-4">
+              <label to="orders">Orders</label>
+            </div>
+            <div class="col-lg-8">
+              <select name="orders" ng-model="publisherListList[editingIndex].orders" multiple>
+                <option ng-repeat="order in orderList | orderBy: 'code'" ng-value="order.id">{{order.code}}</option>
+              </select>
+            </div>
+          </div>
+          <div ng-if="postErrors != null" class="row">
+            <div class="col-lg-12">
+              <div ng-repeat="error in postErrors" ng-bind="error" class="alert alert-danger"></div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-12">
+              <button class="btn btn-primary" ng-click="savePublisherList()">Save</button>
+              <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

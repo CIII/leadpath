@@ -1,0 +1,1 @@
+--alter table ios add column source_id varchar(255) after cap_daily;

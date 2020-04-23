@@ -1,0 +1,59 @@
+{
+  "configuration": {
+    "status": "debug",
+    "appenders": {
+      "Console": {
+        "name": "stdout",
+        "ThresholdFilter": { "level": "debug" },
+        "PatternLayout": {
+          "pattern": "%m%n"
+        }
+      },
+      "RollingFile": {
+        "name": "fout",
+        "fileName": "/var/log/tomcat6/leadpath.log",
+        "filePattern": "/var/log/tomcat6/leadpath-%i.log",
+        "PatternLayout": {
+          "pattern": "%p\t%d{ISO8601}\t%c\t[%t]\t%m%n"
+        },
+        "SizeBasedTriggeringPolicy": { "size": "100MB" }
+      },
+      "SMTP": {
+        "name": "leads-email",
+        "subject": "Lead sent",
+        "from": "tapquality.alerts@gmail.com",
+        "to": "jon@tapquality.com",
+        "smtpHost": "smtp.gmail.com",
+        "smtpPort": "465",
+        "smtpProtocol": "smtps",
+        "smtpUsername": "tapquality.alerts@gmail.com",
+        "smtpPassword": "TapQuality1",
+        "bufferSize": "1",
+        "PatternLayout": {
+          "pattern": "%m%n"
+        }
+      }
+    },
+    "loggers": {
+      "root": {
+        "level": "debug",
+        "AppenderRef": [{ "ref": "stdout" }, { "ref": "fout" }]
+      },
+      "logger": [{
+          "name": "com.pony",
+          "level": "debug"
+        },
+        {
+          "name": "com.tapquality",
+          "level": "debug"
+        },
+        {
+       	  "name": "leads",
+       	  "level": "error",
+       	  "additivity": false,
+       	  "AppenderRef": [{ "ref": "leads-email" }]
+        }
+      ]
+    }
+  }
+}

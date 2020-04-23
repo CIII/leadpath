@@ -1,0 +1,7 @@
+mailchimp.apikey=d5c71dce910b34545725ce7f3642a7f7-us14
+mailchimp.url.base=https://us14.api.mailchimp.com/3.0/
+
+# Lists #
+mailchimp.lists.easiersolarinsights=a94ed1794d
+mailchimp.lists.easiersolardeals=582a836cd0
+mailchimp.lists.solarprodeals=bbd3dae8cb

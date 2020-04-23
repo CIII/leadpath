@@ -1,0 +1,98 @@
+@CHARSET "ISO-8859-1";
+
+#tab-container {
+	padding: 0px 15px 0px 15px;
+}
+
+#publisherEditor {
+    display: none;
+}
+
+#publisherEditor.edit-active {
+    display: inline-block;
+}
+
+#advertiserEditor {
+	display: none;
+}
+
+#advertiserEditor.edit-active {
+	display: inline-block;
+}
+
+#publisherListEditor {
+	display: none;
+}
+
+#publisherListEditor.edit-active {
+	display: inline-block;
+}
+
+.panel.edit-active {
+	
+}
+
+.editing-panel {
+	width: 100%;
+}
+
+.editing-panel input[type=text] {
+	width: 100%;
+}
+
+.advertiser {
+}
+
+.advertiser .name .value {
+	display: inline-block;
+}
+
+.advertiser .name .value.editing {
+	display: none;
+}
+
+.advertiser .name .input {
+	display: none;
+}
+
+.advertiser .name .input.editing {
+	display: inline-block;
+}
+
+.node rect {
+	stroke-width: 1px;
+	stroke: #000;
+	fill: white;
+}
+.node.failed rect {
+	fill: red;
+}
+.node.success rect {
+	fill: green;
+}
+.node.returned rect,
+.node.price-request rect {
+	fill: yellow;
+}
+.node.routed rect {
+	fill: green;
+}
+.node.not-routed rect {
+	fill: yellow;
+}
+.node.root {
+    display: none;
+}
+.link {
+	fill: none;
+	stroke: #555;
+	stroke-opacity: 0.4;
+	stroke-width: 1.5px;
+}
+.link.root {
+	display: none;
+}
+
+.alert {
+	white-space: pre
+}

@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+
+<project name="LeadPath LeadRouting" default="package" basedir="../..">
+
+    <property environment="env"/>
+
+    <property name="target.dir" value="${basedir}/out"/>
+    <property name="tomcat.dir" value="/Applications/apache-tomcat-6.0.44"/>
+
+    <!-- project-specific variables -->
+    <property name="app.name" value="ROOT"/>
+
+    <!-- application folders -->
+    <property name="app.dir" value="${basedir}"/>
+    <property name="src.dir" value="${app.dir}/src"/>
+    <property name="config.dir" value="${app.dir}/src/config"/>
+    <property name="webcontent.dir" value="${app.dir}/src/webcontents"/>
+
+    <!-- path: set up for builds -->
+    <path id="build.class.path">
+        <fileset dir="${config.dir}/WEB-INF/lib">
+            <include name="*.jar"/>
+        </fileset>
+        <fileset dir="${tomcat.dir}/lib">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+    <!-- ==CLEAN== -->
+    <target name="clean" description="Clean up the temp and deply directories for another build">
+        <echo>=== CLEAN ===</echo>
+        <echo>... Removing TEMP and DEPLOY working directories</echo>
+        <delete dir="${target.dir}" quiet="true"/>
+    </target>
+
+    <!-- ==PREPARE== -->
+    <target name="prepare" description="Prepare the temp and deploy directories for the WAR build" depends="clean">
+        <echo>=== PREPARE ===</echo>
+        <echo>...Creating target directories</echo>
+        <mkdir dir="${target.dir}"/>
+        <mkdir dir="${target.dir}/META-INF"/>
+        <mkdir dir="${target.dir}/WEB-INF"/>
+        <mkdir dir="${target.dir}/WEB-INF/lib"/>
+        <mkdir dir="${target.dir}/WEB-INF/classes"/>
+    </target>
+
+    <!-- ==COMPILE== -->
+    <target name="compile" depends="prepare" description="Build it all">
+        <echo>=== COMPILE ===</echo>
+        <echo>Compiling ${src.dir} files ...</echo>
+        <javac debug="off" srcdir="${src.dir}" destdir="${target.dir}/WEB-INF/classes" includes="**/*">
+            <classpath refid="build.class.path"/>
+        </javac>
+    </target>
+
+    <!-- ==PACKAGE== -->
+    <target name="package" depends="compile"
+            description="Pull together all components to the temp area for WAR build; build WAR">
+        <echo>=== PACKAGE ===</echo>
+
+        <!-- copy META-INF -->
+        <echo>...Moving META-INF</echo>
+        <copy todir="${target.dir}/META-INF" overwrite="true">
+            <fileset dir="${config.dir}/META-INF"/>
+        </copy>
+
+        <!-- copy WEB-INF -->
+        <echo>...Moving WEB-INF</echo>
+        <copy todir="${target.dir}/WEB-INF" overwrite="true">
+            <fileset dir="${config.dir}/WEB-INF">
+                <!--<exclude name="web-jetspeed.xml" />-->
+                <!--<exclude name="web-pluto.xml" />-->
+                <!--<exclude name="/themes" />-->
+                <!--<exclude name="/classes" />-->
+            </fileset>
+        </copy>
+
+        <!-- move library files -->
+        <echo>......libraries</echo>
+        <copy todir="${target.dir}/WEB-INF/lib" overwrite="true">
+            <fileset dir="${config.dir}/WEB-INF/lib">
+                <include name="**/*.jar"/>
+                <exclude name="mysql-connector-java-5.1.10-bin.jar"/>
+            </fileset>
+        </copy>
+
+        <!--&lt;!&ndash; move resource file(s) &ndash;&gt;-->
+        <!--<echo>......resources</echo>-->
+        <!--<copy todir="${temp.dir}/WEB-INF/classes/com/courseadvisor/cmportlets/resources" overwrite="true">-->
+        <!--<fileset file="${src.dir}/com/courseadvisor/cmportlets/resources/*.properties" />-->
+        <!--</copy>-->
+
+        <!-- (re)Generate the jetspeed/webcontent.war file -->
+        <echo>...Generate war</echo>
+        <war destfile="${target.dir}/../${app.name}.war" webxml="${config.dir}/WEB-INF/web.xml"
+             basedir="${webcontent.dir}" duplicate="preserve">
+            <classes dir="${target.dir}/WEB-INF/classes"/>
+            <lib dir="${target.dir}/WEB-INF/lib"/>
+        </war>
+    </target>
+
+    <!-- ==DEPLOY WAR== -->
+    <target name="deploywar" depends="package" description="Deploy the war file to the target directory">
+        <echo>=== DEPLOY WAR ===</echo>
+
+        <echo>...Moving ${app.name}.war to TomCat</echo>
+        <!-- <copy file="${staging.dir}/${app.name}.war" tofile="${target.dir}/webapps/jetspeed/WEB-INF/deploy/${app.name}.war" overwrite="true" /> -->
+        <copy file="${target.dir}/../${app.name}.war" tofile="${tomcat.dir}/webapps/ROOT.war" overwrite="true"/>
+    </target>
+
+</project>

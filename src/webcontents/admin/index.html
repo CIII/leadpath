@@ -1,0 +1,54 @@
+<html>
+<head>
+<title>Leadpath Administration</title>
+<base href="/admin" />
+<link rel="stylesheet"
+  href="/bower_components/bootstrap/dist/css/bootstrap.min.css"></link>
+<link rel="stylesheet" href="/admin/css/admin2/sb-admin-2.css"></link>
+<link rel="stylesheet" href="/bower_components/angular-ui/build/angular-ui.css"></link>
+<link rel="stylesheet" href="/admin/css/leadpath.css"></link>
+<script type="text/javascript"
+  src="/bower_components/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript"
+  src="/bower_components/angular/angular.min.js"></script>
+<script type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.9.1/d3.js"></script>
+<script type="text/javascript"
+  src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script type="text/javascript"
+  src="/bower_components/angular-route/angular-route.js"></script>
+<script type="text/javascript" src="/bower_components/angular-ui/build/angular-ui.js"></script>
+<script type="text/javascript" src="/bower_components/angular-filter/dist/angular-filter.min.js"></script>
+<script type="text/javascript" src="/admin/js/ui-bootstrap-tpls-2.5.0.js"></script>
+<script type="text/javascript" src="/admin/js/admin2/sb-admin-2.js"></script>
+<script type="text/javascript" src="/admin/js/controllers/leadpath.js"></script>
+<script type="text/javascript" src="/admin/js/controllers/advertisers.js"></script>
+<script type="text/javascript" src="/admin/js/controllers/leads.js"></script>
+<script type="text/javascript" src="/admin/js/controllers/publishers.js"></script>
+<script type="text/javascript" src="/admin/js/controllers/publisher-lists.js"></script>
+<script type="text/javascript" src="/admin/js/services/advertiser-service.js"></script>
+<script type="text/javascript" src="/admin/js/services/lead-service.js"></script>
+<script type="text/javascript" src="/admin/js/services/publisher-service.js"></script>
+<script type="text/javascript" src="/admin/js/services/order-service.js"></script>
+<script type="text/javascript" src="/admin/js/services/publisher-list-service.js"></script>
+
+</head>
+<body ng-app="admin">
+  <nav class="navbar navbar-default navbar-static-top" role="navigation">
+    <div class="navbar-header">
+      <h1 style="display: none; height: 0px;width: 0px">Leadpath</h1>
+      <img src="/admin/images/leadpath_icon.png" height="50px"></img></div>
+    <ul class="nav navbar-top-links navbar-right">
+      <li><a href="/admin/advertiser-page">Advertisers</a></li>
+      <li><a href="/admin/publisher-page">Publishers</a></li>
+      <li><a href="/admin/publisher-list-page">Publisher Lists</a></li>
+      <li><a href="/admin/lead-page">Leads</a>
+      <li><a href="http://tapatlas.com"><img src="/admin/images/advanced_icon.png" height="20px" title="AdVanced"></img></a></li>
+      <li><a href="http://www.easiersolar.com/pages/admin"><img src="/admin/images/lynx_icon.png" height="20px" title="Lynx"></img></a></li>
+    </ul>
+  </nav>
+  <div id="tab-container" ng-controller="TabController">
+    <div ng-view></div>
+  </div>
+</body>
+</html>
