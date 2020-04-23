@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Context>
+    <!-- Default set of monitored resources -->
+    <WatchedResource>WEB-INF/web.xml</WatchedResource>
+
+	<Valve
+		className="org.apache.catalina.valves.AccessLogValve"
+		prefix="access_log"
+		fileDateFormat="yyyy-MM-dd.HH"
+		suffix=".log"
+		pattern="%t %H cookie:%{SESSIONID}c request:%{SESSIONID}r  %m %U %s %q %r"
+		/>
+
+</Context>

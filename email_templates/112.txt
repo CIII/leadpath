@@ -1,0 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+   "http://www.w3.org/TR/html4/loose.dtd">
+
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta subject="Hello @@fname@@: Welcome to SweepsPatrol">
+	<title>Welcome to SweepsPatrol.com</title>
+</head>
+<body>
+	<p>
+	Dear @@firstname@@,
+	</p>
+	<p>Welcome to SweepsPatrol.com!</p>
+	<p>We carefully select the best of the best for you. You will find only premium Sweepstakes here. Thank you for joining us to get your chance to win one of our outstanding prizes.</p>
+	<p>To increase your chances to win, you can <a href="http://@@url@@/affiliate.php?message_id=@@message_id@@">click on this link</a>, and collect coins that you can use to play our games.<p>
+		<p>Playing our slot machine gets you guaranteed sweeps entries.<p> 
+
+<p>
+	To unsubscribe from further emails, click here: <a href="http://@@url@@/unsub.php?message_id=@@message_id@@">Unsubscribe</a>.
+	</p>
+	 <p> This email was sent by Sendplex </p><p>PO Box 3124</p><p>Woburn MA 01888</p><img height="1" width="1" src="http://@@url@@/pixel.php?message_id=@@message_id@@" alt=""/>
+</body>
+</html>

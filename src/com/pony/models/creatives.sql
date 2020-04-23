@@ -1,0 +1,22 @@
+-- ==============================
+-- offers / creative ideas to test
+-- ==============================
+--While trying to diversify our consumer approach within the mortgage refinance vertical
+--we have been promoting www.TheLenderMarketPlace.com.
+--This new landing page collects the consumers personal and home information with a simple one page submit.
+--We have removed our normal consumer filter requirements and are paying our marketing partners $12.50 per lead
+--for all data submitted.
+--
+--Do you have the ability to target homeowners? If so, we have the perfect campaign for you to increase your monthly revenue.
+--www.solarpanelsinstitute.com. Once again we have a simple one-page consumer lead submit.
+--As long as the consumer is a homeowner and selects $100.00 or greater in monthly power bills, you will receive an $8.00
+--per lead bounty.
+--
+--Wrapping up our new offer pool is www.TaxAdviceToday.com. Tis the season for consumers to clean up their IRS tax debt.
+--You guessed it, a simple one page lead submit that pays our partners $36.00 per lead.
+--
+--		Contact: Jay@rgrmarketing.com for further information
+
+-- ==============================
+--
+-- ==============================

@@ -1,0 +1,249 @@
+<div class="row" ng-controller="advertisers">
+  <div id="advertisers" class="col-lg-8">
+    <div class="panel panel-default">
+      <script type="text/ng-template" id="/advertiser/overlay-template">
+        <div class="modal-header">
+          <h3>Choose Columns</h3>
+        </div>
+        <div class="modal-body" style="overflow: scroll; height: 500px">
+          <table class="table table-bordered table-hover table-striped">
+            <thead>
+              <tr>
+                <th></th><th></th><th></th>
+                <th>Status</th>
+                <th id="header-{{$index}}" ng-repeat="column in columns track by $index">{{column.name}}</th>
+                <th>Guess</th>
+                <th>Status</th>
+                <th id="header-guess">Assigned Guess</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat-start='(group1, rows) in rows | groupBy: "dataItem"' class="group1">
+                <td ng-attr-rowspan="{{guesses[group1]['xxCount']}}">{{group1}}</td>
+                <td ng-attr-colspan="{{columns.length + 6}}"></td>
+              </tr>
+              <tr ng-repeat-start='(group2, groups) in guesses[group1].data | groupBy: "dataItem"' class="group2">
+                <td ng-attr-rowspan="{{guesses[group1][group2]['xxCount']}}">{{group2}}</td>
+                <td ng-attr-colspan="{{columns.length + 5}}"></td>
+              <tr ng-repeat-start='(group3, rows) in guesses[group1][group2].data | groupBy: "dataItem"' ng-class="'row-' + cleanString(group1) + '-' + cleanString(group2) + '-' + cleanString(group3)">
+                <td ng-attr-rowspan="{{guesses[group1][group2][group3]['xxCount']}}" ng-click="rowCollapse($event)">{{group3}}</td>
+                <td ng-attr-colspan="{{columns.length + 3}}"></td>
+                <td ng-attr-rowspan="{{guesses[group1][group2][group3]['xxCount']}}" ng-click="rowCollapse($event)">
+                  <select ng-model="guesses[group1][group2][group3]['guess']">
+                    <option ng-repeat="option in options" ng-value="option">{{optionNames[option]}}</option>
+                  </select>
+                </td>
+              </tr>
+              <tr ng-repeat='row in guesses[group1][group2][group3].data' ng-class="'row-' + cleanString(group1) + '-' + cleanString(group2) + '-' + cleanString(group3)" class="data-row">
+                <td ng-class="classes[row.status]" ng-attr-title="{{row.error}}">
+                </td>
+                <td ng-repeat="datum in row.data track by $index">
+                  {{datum}}
+                </td>
+                <td>{{optionNames[row.guess]}}</td>
+                <td ng-class="classes[row.status]" ng-attr-title="{{row.error}}">
+                </td>
+              </tr>
+              <tr ng-repeat-end></tr>
+              <tr ng-repeat-end></tr>
+              <tr ng-repeat-end></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" type='button' ng-click='$ctrl.ok()'>OK</button>
+          <button class="btn btn-warning" type='button' ng-click='$ctrl.cancel()'>Cancel</button>
+        </div>
+      </script>
+      <script type="text/ng-template" id="/advertiser/save-template">
+        <div class="modal-header">
+          <h3>Save?</h3>
+        </div>
+        <div class="modal-body">
+          Are you sure you want to save this advertiser?
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" type="button" ng-click="$ctrl.ok()">OK</button>
+          <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()">Cancel</button>
+        </div>
+      </script>
+      <script type="text/ng-template" id="/advertiser.html">
+          <td class="name col-lg-6">
+            <div ng-class="value" ng-click="valueClick($event, $index)">{{advertiser.name}}</div>
+          </td>
+          <td class="col-lg-6">
+            <button ng-click="pauseAdvertiser($event, $index)">{{ advertiser.status ? 'Pause' : 'Unpause' }}</button>
+          </td>
+        </script>
+      <div class="panel-heading">
+        <div class="row">
+          <div class="col-lg-4">All Advertisers</div>
+          <div class="col-lg-8" style="text-align: right"><input type="checkbox" ng-model="includePaused"
+            ng-click="includePausedClicked();">Include Paused?</input></div>
+        </div>
+      </div>
+      <div class="panel-body">
+        <table class="table table-bordered table-hover table-striped">
+          <thead>
+            <tr>
+              <th class="col-lg-6">Name</th>
+              <th class="col-lg-6"><button ng-click="newAdvertiser()">New</button></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="advertiser in advertiserList" ng-include
+              src="'/advertiser.html'"
+              ng-class="{'advertiser': true, 'paused': advertiser.status == 0}"></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div id="advertiserEditor" ng-class="{'edit-active': editingIndex != -1, 'editing-panel': true}">
+      <div ng-class="{'panel': true, 'panel-default': true}">
+        <div class="panel-heading">Editing</div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-lg-4">
+              <label to="name">Name</label>
+            </div>
+            <div class="col-lg-8">
+              <input name="name" type="text"
+                ng-model="advertiserList[editingIndex].name"></input>
+            </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-4">
+            <label to="code">Code</label>
+          </div>
+          <div class="col-lg-8">
+            <input type="text"
+              ng-model="advertiserList[editingIndex].code"></input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-4">
+            <label to="lead_type_id">Lead Type</label>
+          </div>
+          <div class="col-lg-8">
+            <select name="leadType"
+              ng-model="advertiserList[editingIndex].lead_type_id">
+              <option ng-selected="advertiser.lead_type_id=0" value="">--</option>
+              <option ng-selected="advertiser.lead_type_id=-1"
+                value="-1">Pony Lead</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-4">
+            <label to="vpl">VPL</label>
+          </div>
+          <div class="col-lg-8">
+            <input name="vpl" type="number"
+              ng-model="advertiserList[editingIndex].vpl"></input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-4">
+            <label to="sourceId">Source ID</label>
+          </div>
+          <div class="col-lg-8">
+              {{advertiserList[editingIndex].source_id}}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-4">
+            <label to="isExclusive">Is Exclusive?</label>
+          </div>
+          <div class="col-lg-8">
+            <input name="isExclusive" type="checkbox"
+              ng-model="advertiserList[editingIndex].is_exclusive"></input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-4">
+            <label to="capDaily">Cap Daily</label>
+          </div>
+          <div class="col-lg-8">
+            <input name="capDaily" type="number"
+              ng-model="advertiserList[editingIndex].cap_daily"></input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-4">
+            <label to="capMonthly">Cap Monthly</label>
+          </div>
+          <div class="col-lg-8">
+            <input name="capMonthly" type="number"
+              ng-model="advertiserList[editingIndex].cap_monthly"></input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-4">
+            <label to="capTotal">Cap Total</label>
+          </div>
+          <div class="col-lg-8">
+            <input name="capTotal" type="number"
+              ng-model="advertiserList[editingIndex].cap_total"></input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-4">
+            <label to="targetUrl">Target URL</label>
+          </div>
+          <div class="col-lg-8">
+            <input name="targetUrl" type="text"
+              ng-model="advertiserList[editingIndex].target_url"></input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-4">
+            <label to="weight">Weight</label>
+          </div>
+          <div class="col-lg-8">
+            <input name="weight" type="number"
+              ng-model="advertiserList[editingIndex].weight"></input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-4">
+            <label to="email">Email</label>
+          </div>
+          <div class="col-lg-8">
+            <input name="email" type="email"
+              ng-model="advertiserList[editingIndex].email"></input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12">
+            <button class="btn btn-primary" ng-click="saveAdvertiser()">Save</button>
+            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div ng-class="{'panel': true, 'panel-default': true}">
+      <div class="panel-heading">Dispositions</div>
+      <div class="panel-body">
+        <div class="row">
+          <div ng-if="dispositionError != null" ng-bind="dispositionError" class="alert alert-danger col-lg-12"></div>
+          <div class="col-lg-4">
+            <label to="dispositions">Dispositions</input>
+          </div>
+          <div class="col-lg-8">
+            <input type="file" id="dispositions" name="dispositions" ng-model="file" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12">
+            <button class="btn btn-primary" ng-click="postDispositions()">Upload</button>
+          </div>
+        </div>
+        <div class="row">
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
